@@ -13,7 +13,7 @@ find_package(Qt5 COMPONENTS
     Widgets
     REQUIRED)
 
-add_executable(PixeonApp main.cpp)
+add_executable(PixeonApp main.cpp PXMainWindow.cpp PXMainWindow.h)
 
 target_link_libraries(PixeonApp
     Qt5::Core
