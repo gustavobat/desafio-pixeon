@@ -8,7 +8,7 @@
 PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent) {
 
     // Resize and center GUI
-    this->resize(800, 600);
+    resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
     move(screen()->geometry().center() - frameGeometry().center());
 }
 
