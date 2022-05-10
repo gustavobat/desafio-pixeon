@@ -2,15 +2,15 @@
 // Created by Gustavo Batistela on 5/10/22.
 //
 
+#include "PXMainWindow.h"
 #include <QApplication>
-#include <QPushButton>
 
 int main(int argc, char *argv[]) {
-
-    QApplication::setApplicationName("Desafio Pixeon");
-    QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
+    QApplication app(argc, argv);
+    QApplication::setApplicationDisplayName("Desafio Pixeon");
+    
+    PXMainWindow mainWindow;
+    mainWindow.show();
+    
     return QApplication::exec();
 }
