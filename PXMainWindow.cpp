@@ -69,6 +69,7 @@ void PXMainWindow::createCentralWidget() {
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
     auto *delete_image_btn = new QPushButton("Delete Image File", this);
+    delete_image_btn->setDisabled(true);
     connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
 
     groupbox_layout->addWidget(open_delete_label);
