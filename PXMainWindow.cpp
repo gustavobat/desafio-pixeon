@@ -89,12 +89,26 @@ void PXMainWindow::openImageDialog() {
 }
 
 void PXMainWindow::loadFile(const QString &fileName) {
-    
-    list->addItem(strippedName(fileName));
-    
-    QPixmap pixmap(fileName);
-    pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    imageLabel.setPixmap(pixmap);
+
+    const auto stripped_name = strippedName(fileName);
+    strippedToAbsoluteFileName.insert({stripped_name, fileName});
+
+    list->addItem(stripped_name);
+    setCurrentFile(fileName);
+}
+
+void PXMainWindow::setCurrentFile(const QString &fullFileName) {
+    pixmap = QPixmap(fullFileName);
+    drawImage();
+}
+
+void PXMainWindow::drawImage() {
+    imageLabel.resize(scaleFactor * scrollArea->maximumViewportSize() );
+    imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QPixmap scaled_pixmap =
+        pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    imageLabel.setPixmap(scaled_pixmap);
+
     scrollArea->setWidget(&imageLabel);
 }
 

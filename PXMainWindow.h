@@ -18,7 +18,9 @@ private:
     void createCentralWidget();
     void about();
     static QString strippedName(const QString &fullFileName);
-    
+    void setCurrentFile(const QString &fullFileName);
+    void drawImage();
+
     QLabel imageLabel;
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
