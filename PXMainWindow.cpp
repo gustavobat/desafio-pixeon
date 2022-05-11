@@ -10,7 +10,7 @@ PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent) {
     // Resize and center GUI
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
     move(screen()->geometry().center() - frameGeometry().center());
-    
+
     // Populate GUI with widgets
     createMenuBar();
     createCentralWidget();
