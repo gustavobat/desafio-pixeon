@@ -62,7 +62,7 @@ void PXMainWindow::createCentralWidget() {
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
     auto *delete_image_btn = new QPushButton("Delete Image File", this);
-    connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImage()));
+    connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
 
     groupbox_layout->addWidget(open_delete_label);
     groupbox_layout->addWidget(open_image_btn);
@@ -81,7 +81,7 @@ void PXMainWindow::createCentralWidget() {
     groupBox->setLayout(groupbox_layout);
 }
 
-void PXMainWindow::openImage() {
+void PXMainWindow::openImageDialog() {
     QString fileName = QFileDialog::getOpenFileName(
         this, tr("Open Image File"), "",
         tr("Image Files (*.png *.jpg *.jpeg  *.bmp)"));

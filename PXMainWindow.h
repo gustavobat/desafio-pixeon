@@ -24,7 +24,7 @@ private:
     QListWidget * list = nullptr;
     
 private slots:
-    void openImage();
+    void openImageDialog();
     void loadFile(const QString &fileName);
 };
 
