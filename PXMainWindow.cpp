@@ -43,8 +43,8 @@ void PXMainWindow::createCentralWidget() {
     auto *groupBox = new QGroupBox(this);
 
     auto *root_layout = new QHBoxLayout;
-    root_layout->addWidget(groupBox);
-    root_layout->addWidget(scrollArea);
+    root_layout->addWidget(groupBox, 2);
+    root_layout->addWidget(scrollArea, 8);
 
     // Create and set central widget from root layout
     auto *centralWidget = new QWidget();
