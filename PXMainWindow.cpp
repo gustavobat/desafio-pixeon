@@ -95,7 +95,24 @@ void PXMainWindow::createCentralWidget() {
     groupbox_layout->addWidget(increase_zoom_btn);
     groupbox_layout->addWidget(decrease_zoom_btn);
     groupbox_layout->addWidget(fit_to_screen_btn);
-
+    
+    auto *brightness_label = new QLabel("Brightness adjustment:");
+    auto *contrast_label = new QLabel("Constrast adjustment:");
+    
+    auto * brightness_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
+    auto * contrast_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
+    brightness_slider->setMinimum(-10);
+    brightness_slider->setMaximum(10);
+    brightness_slider->setValue(0);
+    contrast_slider->setMinimum(-10);
+    contrast_slider->setMaximum(10);
+    contrast_slider->setValue(0);
+    
+    groupbox_layout->addWidget(brightness_label);
+    groupbox_layout->addWidget(brightness_slider);
+    groupbox_layout->addWidget(contrast_label);
+    groupbox_layout->addWidget(contrast_slider);
+    
     groupBox->setLayout(groupbox_layout);
 }
 
