@@ -14,6 +14,8 @@ public:
 
 private:
     void createMenuBar();
+    void about();
+    
 };
 
 #endif // PXMAINWINDOW_H
