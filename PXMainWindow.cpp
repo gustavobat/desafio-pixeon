@@ -26,6 +26,9 @@ void PXMainWindow::createMenuBar() {
         fileMenu->addAction(tr("Open Image"), this, &PXMainWindow::openImageDialog);
     openAction->setStatusTip(tr("Open an image file"));
     openAction->setShortcut(QKeySequence::Open);
+    
+    QAction *exitAct = fileMenu->addAction(tr("Exit"), this, &QWidget::close);
+    exitAct->setShortcut(QKeySequence::Close);
 
     QAction *aboutAction = aboutMenu->addAction(tr("About"), this, &PXMainWindow::about);
     aboutAction->setStatusTip(tr("Show information about this program"));
