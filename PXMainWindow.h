@@ -20,6 +20,7 @@ private:
     static QString strippedName(const QString &fullFileName);
     void setCurrentFile(const QString &fullFileName);
     void drawImage();
+    void scaleImage(double factor);
 
     QLabel imageLabel;
     QPixmap pixmap;
@@ -33,6 +34,9 @@ private:
 private slots:
     void openImageDialog();
     void loadFile(const QString &fileName);
+    void fitToScreen();
+    void zoomIn();
+    void zoomOut();
 };
 
 #endif // PXMAINWINDOW_H

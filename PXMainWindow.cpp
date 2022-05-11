@@ -116,3 +116,17 @@ void PXMainWindow::drawImage() {
 QString PXMainWindow::strippedName(const QString &fullFileName) {
     return QFileInfo(fullFileName).fileName();
 }
+
+void PXMainWindow::fitToScreen() {
+    scaleFactor = 1.0;
+    drawImage();
+}
+
+void PXMainWindow::scaleImage(const double factor) {
+    scaleFactor *= factor;
+    drawImage();
+}
+
+void PXMainWindow::zoomIn() { scaleImage(1.25); }
+
+void PXMainWindow::zoomOut() { scaleImage(0.8); }
