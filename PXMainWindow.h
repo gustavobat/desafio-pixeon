@@ -38,6 +38,7 @@ private slots:
     void fitToScreen();
     void zoomIn();
     void zoomOut();
+    void onListItemDoubleClick(QListWidgetItem * item);
 };
 
 #endif // PXMAINWINDOW_H

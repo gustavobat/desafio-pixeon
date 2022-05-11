@@ -63,6 +63,8 @@ void PXMainWindow::createCentralWidget() {
     auto *groupbox_layout = new QVBoxLayout;
     list = new QListWidget();
     groupbox_layout->addWidget(list);
+    connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
+            SLOT(onListItemDoubleClick(QListWidgetItem*)));
 
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
@@ -146,4 +148,12 @@ void PXMainWindow::centerScrollBars() {
         const auto range = bar->maximum() - bar->minimum() + bar->pageStep();
         bar->setValue(int((range - bar->pageStep()) / 2));
     });
+}
+
+void PXMainWindow::onListItemDoubleClick(QListWidgetItem *item) {
+    const auto text = item->text();
+    if (strippedToAbsoluteFileName.find(text) != strippedToAbsoluteFileName.end()) {
+        const auto file_path = strippedToAbsoluteFileName.find(text)->second;
+        setCurrentFile(file_path);
+    }
 }
