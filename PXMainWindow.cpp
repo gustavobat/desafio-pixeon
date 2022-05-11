@@ -54,12 +54,29 @@ void PXMainWindow::createCentralWidget() {
     // Create vertical layout in groupbox and add list widget and a button
     list = new QListWidget();
     auto *open_image_btn = new QPushButton("Open Image File", this);
+    connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImage()));
 
     auto *groupbox_layout = new QVBoxLayout;
-
     groupbox_layout->addWidget(list);
     groupbox_layout->addWidget(open_image_btn);
     groupBox->setLayout(groupbox_layout);
+}
+
+void PXMainWindow::openImage() {
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("Open Image File"), "",
+        tr("Image Files (*.png *.jpg *.jpeg  *.bmp)"));
+    if (!fileName.isEmpty()) loadFile(fileName);
+}
+
+void PXMainWindow::loadFile(const QString &fileName) {
+    
+    list->addItem(strippedName(fileName));
+    
+    QPixmap pixmap(fileName);
+    pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    imageLabel.setPixmap(pixmap);
+    scrollArea->setWidget(&imageLabel);
 }
 
 QString PXMainWindow::strippedName(const QString &fullFileName) {

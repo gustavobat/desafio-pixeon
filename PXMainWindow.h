@@ -2,6 +2,7 @@
 #define PXMAINWINDOW_H
 
 #include <QLabel>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QScrollArea>
 
@@ -18,8 +19,13 @@ private:
     void about();
     static QString strippedName(const QString &fullFileName);
     
+    QLabel imageLabel;
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
+    
+private slots:
+    void openImage();
+    void loadFile(const QString &fileName);
 };
 
 #endif // PXMAINWINDOW_H
