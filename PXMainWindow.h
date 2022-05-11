@@ -22,6 +22,8 @@ private:
     void drawImage();
 
     QLabel imageLabel;
+    QPixmap pixmap;
+    
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
     
