@@ -52,7 +52,7 @@ void PXMainWindow::createCentralWidget() {
     setCentralWidget(centralWidget);
 
     // Create vertical layout in groupbox and add list widget and a button
-    auto *list = new QListWidget();
+    list = new QListWidget();
     auto *open_image_btn = new QPushButton("Open Image File", this);
 
     auto *groupbox_layout = new QVBoxLayout;

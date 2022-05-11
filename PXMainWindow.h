@@ -18,6 +18,7 @@ private:
     void about();
     
     QScrollArea * scrollArea = nullptr;
+    QListWidget * list = nullptr;
 };
 
 #endif // PXMAINWINDOW_H
