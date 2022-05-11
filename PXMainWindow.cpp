@@ -116,6 +116,7 @@ void PXMainWindow::setCurrentFile(const QString &fullFileName) {
 void PXMainWindow::drawImage() {
     imageLabel.resize(scaleFactor * scrollArea->maximumViewportSize() );
     imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    scrollArea->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     QPixmap scaled_pixmap =
         pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     imageLabel.setPixmap(scaled_pixmap);
