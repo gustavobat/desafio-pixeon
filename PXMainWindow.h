@@ -27,7 +27,9 @@ private:
     
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
-    
+
+    std::map<QString, QString> strippedToAbsoluteFileName;
+
 private slots:
     void openImageDialog();
     void loadFile(const QString &fileName);
