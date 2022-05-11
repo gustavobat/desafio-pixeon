@@ -23,6 +23,7 @@ private:
 
     QLabel imageLabel;
     QPixmap pixmap;
+    double scaleFactor = 1.0;
     
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
