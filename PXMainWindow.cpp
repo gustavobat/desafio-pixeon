@@ -22,7 +22,8 @@ void PXMainWindow::createMenuBar() {
     auto *fileMenu = menuBar()->addMenu(tr("File"));
     auto *aboutMenu = menuBar()->addMenu(tr("About"));
 
-    QAction *openAction = fileMenu->addAction(tr("Open Image"), this, &PXMainWindow::openImage);
+    QAction *openAction =
+        fileMenu->addAction(tr("Open Image"), this, &PXMainWindow::openImageDialog);
     openAction->setStatusTip(tr("Open an image file"));
 
     QAction *aboutAction = aboutMenu->addAction(tr("About"), this, &PXMainWindow::about);
