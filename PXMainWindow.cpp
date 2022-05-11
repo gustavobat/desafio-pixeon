@@ -65,12 +65,17 @@ void PXMainWindow::createCentralWidget() {
     groupbox_layout->addWidget(list);
     connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
             SLOT(onListItemDoubleClick(QListWidgetItem*)));
-
+    
+    connect(list, SIGNAL(itemPressed(QListWidgetItem*)), this,
+            SLOT(onListItemSelected(QListWidgetItem*)));
+    
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
-    auto *delete_image_btn = new QPushButton("Delete Image File", this);
-    delete_image_btn->setDisabled(true);
     connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
+    
+    delete_image_btn = new QPushButton("Delete Image File", this);
+    delete_image_btn->setDisabled(true);
+    connect(delete_image_btn, SIGNAL(clicked()), this, SLOT(deleteImages()));
 
     groupbox_layout->addWidget(open_delete_label);
     groupbox_layout->addWidget(open_image_btn);
@@ -157,5 +162,22 @@ void PXMainWindow::onListItemDoubleClick(QListWidgetItem *item) {
     if (strippedToAbsoluteFileName.find(text) != strippedToAbsoluteFileName.end()) {
         const auto file_path = strippedToAbsoluteFileName.find(text)->second;
         setCurrentFile(file_path);
+    }
+}
+
+void PXMainWindow::onListItemSelected(QListWidgetItem *item) {
+    delete_image_btn->setEnabled(true);
+}
+
+void PXMainWindow::deleteImages() {
+    QModelIndexList selectedList = list->selectionModel()->selectedIndexes();
+    for(const QModelIndex& singleIndex : selectedList) {
+        list->model()->removeRow(singleIndex.row());
+    }
+    if (list->selectionModel()->selectedIndexes().isEmpty()) {
+        delete_image_btn->setDisabled(true);
+        imageLabel.clear();
+    } else {
+        onListItemDoubleClick(list->currentItem());
     }
 }

@@ -24,6 +24,7 @@ private:
     void centerScrollBars();
 
     QLabel imageLabel;
+    QPushButton *delete_image_btn = nullptr;
     QPixmap pixmap;
     double scaleFactor = 1.0;
     
@@ -39,6 +40,8 @@ private slots:
     void zoomIn();
     void zoomOut();
     void onListItemDoubleClick(QListWidgetItem * item);
+    void onListItemSelected(QListWidgetItem * item);
+    void deleteImages();
 };
 
 #endif // PXMAINWINDOW_H
