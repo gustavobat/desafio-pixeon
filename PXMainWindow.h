@@ -21,6 +21,7 @@ private:
     void setCurrentFile(const QString &fullFileName);
     void drawImage();
     void scaleImage(double factor);
+    void centerScrollBars();
 
     QLabel imageLabel;
     QPixmap pixmap;

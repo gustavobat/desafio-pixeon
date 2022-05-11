@@ -114,6 +114,7 @@ void PXMainWindow::drawImage() {
     imageLabel.setPixmap(scaled_pixmap);
 
     scrollArea->setWidget(&imageLabel);
+    centerScrollBars();
 }
 
 QString PXMainWindow::strippedName(const QString &fullFileName) {
@@ -133,3 +134,13 @@ void PXMainWindow::scaleImage(const double factor) {
 void PXMainWindow::zoomIn() { scaleImage(1.25); }
 
 void PXMainWindow::zoomOut() { scaleImage(0.8); }
+
+void PXMainWindow::centerScrollBars() {
+    auto * hbar = scrollArea->horizontalScrollBar();
+    const auto hrange = hbar->maximum() - hbar->minimum() + hbar->pageStep();
+    hbar->setValue(int((hrange - hbar->pageStep()) / 2));
+    
+    auto * vbar = scrollArea->verticalScrollBar();
+    const auto vrange = vbar->maximum() - vbar->minimum() + vbar->pageStep();
+    vbar->setValue(int((vrange - vbar->pageStep()) / 2));
+}
