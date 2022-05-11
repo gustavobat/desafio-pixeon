@@ -43,13 +43,15 @@ void PXMainWindow::about() {
 }
 
 void PXMainWindow::createCentralWidget() {
-
+    
+    imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     // Root horizontal root_layout, contains a scroll area and
     // a group of QGroupBox for editing and the list viewer
     scrollArea = new QScrollArea();
     scrollArea->setVisible(true);
+    scrollArea->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     auto *groupBox = new QGroupBox(this);
-
+    
     auto *root_layout = new QHBoxLayout;
     root_layout->addWidget(groupBox, 2);
     root_layout->addWidget(scrollArea, 8);
@@ -120,12 +122,9 @@ void PXMainWindow::setCurrentFile(const QString &fullFileName) {
 
 void PXMainWindow::drawImage() {
     imageLabel.resize(scaleFactor * scrollArea->maximumViewportSize() );
-    imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    scrollArea->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     QPixmap scaled_pixmap =
         pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     imageLabel.setPixmap(scaled_pixmap);
-
     scrollArea->setWidget(&imageLabel);
     centerScrollBars();
 }
