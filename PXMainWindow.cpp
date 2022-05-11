@@ -61,3 +61,7 @@ void PXMainWindow::createCentralWidget() {
     groupbox_layout->addWidget(open_image_btn);
     groupBox->setLayout(groupbox_layout);
 }
+
+QString PXMainWindow::strippedName(const QString &fullFileName) {
+    return QFileInfo(fullFileName).fileName();
+}

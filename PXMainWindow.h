@@ -16,6 +16,7 @@ private:
     void createMenuBar();
     void createCentralWidget();
     void about();
+    static QString strippedName(const QString &fullFileName);
     
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
