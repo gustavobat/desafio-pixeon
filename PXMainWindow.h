@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QListWidget>
 #include <QMainWindow>
+#include <QPushButton>
 #include <QScrollArea>
 
 class PXMainWindow : public QMainWindow {
