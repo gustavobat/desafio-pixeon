@@ -14,8 +14,10 @@ public:
 
 private:
     void createMenuBar();
+    void createCentralWidget();
     void about();
     
+    QScrollArea * scrollArea = nullptr;
 };
 
 #endif // PXMAINWINDOW_H
