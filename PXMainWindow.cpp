@@ -72,12 +72,12 @@ void PXMainWindow::createCentralWidget() {
     auto *zoom_label = new QLabel("Zoom options:");
     auto *increase_zoom_btn = new QPushButton("Increase Zoom", this);
     auto *decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
-    auto *fit_to_screen = new QPushButton("Fit to screen", this);
+    auto *fit_to_screen_btn = new QPushButton("Fit to screen", this);
 
     groupbox_layout->addWidget(zoom_label);
     groupbox_layout->addWidget(increase_zoom_btn);
     groupbox_layout->addWidget(decrease_zoom_btn);
-    groupbox_layout->addWidget(fit_to_screen);
+    groupbox_layout->addWidget(fit_to_screen_btn);
 
     groupBox->setLayout(groupbox_layout);
 }
