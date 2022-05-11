@@ -55,13 +55,29 @@ void PXMainWindow::createCentralWidget() {
     setCentralWidget(centralWidget);
 
     // Create vertical layout in groupbox and add list widget and a button
+    auto *groupbox_layout = new QVBoxLayout;
     list = new QListWidget();
+    groupbox_layout->addWidget(list);
+
+    auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
+    auto *delete_image_btn = new QPushButton("Delete Image File", this);
     connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImage()));
 
-    auto *groupbox_layout = new QVBoxLayout;
-    groupbox_layout->addWidget(list);
+    groupbox_layout->addWidget(open_delete_label);
     groupbox_layout->addWidget(open_image_btn);
+    groupbox_layout->addWidget(delete_image_btn);
+
+    auto *zoom_label = new QLabel("Zoom options:");
+    auto *increase_zoom_btn = new QPushButton("Increase Zoom", this);
+    auto *decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
+    auto *fit_to_screen = new QPushButton("Fit to screen", this);
+
+    groupbox_layout->addWidget(zoom_label);
+    groupbox_layout->addWidget(increase_zoom_btn);
+    groupbox_layout->addWidget(decrease_zoom_btn);
+    groupbox_layout->addWidget(fit_to_screen);
+
     groupBox->setLayout(groupbox_layout);
 }
 
