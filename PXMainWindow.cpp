@@ -97,7 +97,7 @@ void PXMainWindow::createCentralWidget() {
     groupbox_layout->addWidget(fit_to_screen_btn);
     
     auto *brightness_label = new QLabel("Brightness adjustment:");
-    auto *contrast_label = new QLabel("Constrast adjustment:");
+    auto *contrast_label = new QLabel("Contrast adjustment:");
     
     auto * brightness_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
     auto * contrast_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
