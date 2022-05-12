@@ -101,11 +101,11 @@ void PXMainWindow::createCentralWidget() {
     
     auto * brightness_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
     auto * contrast_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
-    brightness_slider->setMinimum(-10);
-    brightness_slider->setMaximum(10);
+    brightness_slider->setMinimum(-100);
+    brightness_slider->setMaximum(100);
     brightness_slider->setValue(0);
-    contrast_slider->setMinimum(-10);
-    contrast_slider->setMaximum(10);
+    contrast_slider->setMinimum(-100);
+    contrast_slider->setMaximum(100);
     contrast_slider->setValue(0);
     
     groupbox_layout->addWidget(brightness_label);
