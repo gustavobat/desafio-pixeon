@@ -23,6 +23,8 @@ private:
     void createCentralWidget();
     void createGroupBoxWidgets(QGroupBox *groupBox);
     void about();
+    void disableControls();
+    void enableControls();
     static QString strippedName(const QString &fullFileName);
     void setCurrentFile(const QString &fullFileName);
     void drawImage();

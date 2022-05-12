@@ -88,7 +88,6 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
     delete_image_btn = new QPushButton("Delete Image File", this);
-    delete_image_btn->setDisabled(true);
     
     // Create zoom related label/buttons
     zoom_label = new QLabel("Zoom options:");
@@ -136,9 +135,35 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
     groupbox_layout->addWidget(brightness_slider);
     groupbox_layout->addWidget(contrast_label);
     groupbox_layout->addWidget(contrast_slider);
-    
+
+    disableControls();
+
     // Set groupbox layout
     groupBox->setLayout(groupbox_layout);
+}
+
+void PXMainWindow::disableControls() {
+    delete_image_btn->setDisabled(true);
+    zoom_label->setDisabled(true);
+    increase_zoom_btn->setDisabled(true);
+    decrease_zoom_btn->setDisabled(true);
+    fit_to_screen_btn->setDisabled(true);
+    brightness_label->setDisabled(true);
+    brightness_slider->setDisabled(true);
+    contrast_label->setDisabled(true);
+    contrast_slider->setDisabled(true);
+}
+
+void PXMainWindow::enableControls() {
+    delete_image_btn->setEnabled(true);
+    zoom_label->setEnabled(true);
+    increase_zoom_btn->setEnabled(true);
+    decrease_zoom_btn->setEnabled(true);
+    fit_to_screen_btn->setEnabled(true);
+    brightness_label->setEnabled(true);
+    brightness_slider->setEnabled(true);
+    contrast_label->setEnabled(true);
+    contrast_slider->setEnabled(true);
 }
 
 void PXMainWindow::openImageDialog() {
@@ -155,6 +180,7 @@ void PXMainWindow::loadFile(const QString &fileName) {
 
     list->addItem(stripped_name);
     setCurrentFile(fileName);
+    enableControls();
 }
 
 void PXMainWindow::setCurrentFile(const QString &fullFileName) {
@@ -213,7 +239,7 @@ void PXMainWindow::deleteImages() {
         list->model()->removeRow(singleIndex.row());
     }
     if (list->selectionModel()->selectedIndexes().isEmpty()) {
-        delete_image_btn->setDisabled(true);
+        disableControls();
         imageLabel.clear();
     } else {
         onListItemDoubleClick(list->currentItem());
