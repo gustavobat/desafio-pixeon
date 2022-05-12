@@ -14,8 +14,9 @@ PXRenderThread::~PXRenderThread() {
 
 void PXRenderThread::render(int brightness_factor, int contrast_factor, QSize size,
                             QPixmap *orig_pixmap) {
-    QMutexLocker locker(&m_mutex);
     
+    // Set class data
+    QMutexLocker locker(&m_mutex);
     this->m_brightness_factor = brightness_factor;
     this->m_contrast_factor = contrast_factor;
     this->m_result_size = size;
