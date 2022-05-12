@@ -19,19 +19,19 @@ PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent) {
 PXMainWindow::~PXMainWindow() = default;
 
 void PXMainWindow::createMenuBar() {
-    auto *fileMenu = menuBar()->addMenu(tr("File"));
-    auto *aboutMenu = menuBar()->addMenu(tr("About"));
+    auto *file_menu = menuBar()->addMenu(tr("&File"));
 
-    QAction *openAction =
-        fileMenu->addAction(tr("Open Image"), this, &PXMainWindow::openImageDialog);
-    openAction->setStatusTip(tr("Open an image file"));
-    openAction->setShortcut(QKeySequence::Open);
-    
-    QAction *exitAct = fileMenu->addAction(tr("Exit"), this, &QWidget::close);
-    exitAct->setShortcut(QKeySequence::Close);
+    auto *open_action =
+        file_menu->addAction(tr("&Open Image"), this, &PXMainWindow::openImageDialog);
+    open_action->setStatusTip(tr("Open an image file"));
+    open_action->setShortcut(QKeySequence::Open);
 
-    QAction *aboutAction = aboutMenu->addAction(tr("About"), this, &PXMainWindow::about);
-    aboutAction->setStatusTip(tr("Show information about this program"));
+    auto *exit_action = file_menu->addAction(tr("E&xit"), this, &QWidget::close);
+    exit_action->setStatusTip(tr("Close this program"));
+    exit_action->setShortcut(QKeySequence::Close);
+
+    auto *about_action = menuBar()->addAction(tr("&About"), this, &PXMainWindow::about);
+    about_action->setStatusTip(tr("Show information about this program"));
 }
 
 void PXMainWindow::about() {
