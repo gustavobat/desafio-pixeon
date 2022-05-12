@@ -174,6 +174,14 @@ void PXMainWindow::openImageDialog() {
 void PXMainWindow::loadFile(const QString &fileName) {
 
     const auto stripped_name = strippedName(fileName);
+    
+    if (strippedToAbsoluteFileName.find(stripped_name) != strippedToAbsoluteFileName.end()) {
+        QMessageBox msg_box;
+        msg_box.setText("Please select a file with a different name.");
+        msg_box.exec();
+        return;
+    }
+    
     strippedToAbsoluteFileName.insert({stripped_name, fileName});
 
     list->addItem(stripped_name);
