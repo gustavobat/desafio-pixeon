@@ -229,10 +229,6 @@ void PXMainWindow::onListItemDoubleClick(QListWidgetItem *item) {
     }
 }
 
-void PXMainWindow::onListItemSelected(QListWidgetItem *item) {
-    delete_image_btn->setEnabled(true);
-}
-
 void PXMainWindow::deleteImages() {
     QModelIndexList selectedList = list->selectionModel()->selectedIndexes();
     for(const QModelIndex& singleIndex : selectedList) {

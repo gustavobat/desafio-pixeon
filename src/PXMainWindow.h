@@ -61,7 +61,6 @@ private slots:
     void zoomIn();
     void zoomOut();
     void onListItemDoubleClick(QListWidgetItem * item);
-    void onListItemSelected(QListWidgetItem * item);
     void deleteImages();
     void onBrightnessChange(int value);
     void onContrastChange(int value);
