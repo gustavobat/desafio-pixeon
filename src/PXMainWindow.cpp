@@ -49,15 +49,23 @@ void PXMainWindow::about() {
 }
 
 void PXMainWindow::createCentralWidget() {
-    // Root horizontal root_layout, contains a scroll area and
-    // a group of QGroupBox for editing and the list viewer
+    
+    // This method creates the main/central widget and its layout
+    // The root layout contains a scroll area and a QGroupBox
+    // with the list viewer and the control panel
+    auto *root_layout = new QHBoxLayout;
+    
+    // Create scroll area
     scrollArea = new QScrollArea();
     scrollArea->setVisible(true);
     scrollArea->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     scrollArea->setWidget(&imageLabel);
-    auto *groupBox = new QGroupBox(this);
     
-    auto *root_layout = new QHBoxLayout;
+    // Create group box
+    auto *groupBox = new QGroupBox(this);
+    createGroupBoxWidgets(groupBox);
+    
+    // Add widgets to layout
     root_layout->addWidget(groupBox, 2);
     root_layout->addWidget(scrollArea, 8);
 
@@ -66,6 +74,10 @@ void PXMainWindow::createCentralWidget() {
     centralWidget->setLayout(root_layout);
     setCentralWidget(centralWidget);
 
+}
+
+void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
+    
     // Create vertical layout in groupbox and add list widget and a button
     auto *groupbox_layout = new QVBoxLayout;
     list = new QListWidget();
@@ -75,13 +87,6 @@ void PXMainWindow::createCentralWidget() {
     
     connect(list, SIGNAL(itemPressed(QListWidgetItem*)), this,
             SLOT(onListItemSelected(QListWidgetItem*)));
-
-    populateGroupBoxLayout(groupBox, groupbox_layout);
-
-    groupBox->setLayout(groupbox_layout);
-}
-
-void PXMainWindow::populateGroupBoxLayout(QGroupBox *groupBox, QVBoxLayout *groupbox_layout) {
     
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
@@ -128,6 +133,8 @@ void PXMainWindow::populateGroupBoxLayout(QGroupBox *groupBox, QVBoxLayout *grou
     groupbox_layout->addWidget(brightness_slider);
     groupbox_layout->addWidget(contrast_label);
     groupbox_layout->addWidget(contrast_slider);
+    
+    groupBox->setLayout(groupbox_layout);
 }
 
 void PXMainWindow::openImageDialog() {

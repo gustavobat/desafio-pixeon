@@ -21,7 +21,7 @@ public:
 private:
     void createMenuBar();
     void createCentralWidget();
-    void populateGroupBoxLayout(QGroupBox *groupBox, QVBoxLayout *groupbox_layout);
+    void createGroupBoxWidgets(QGroupBox *groupBox);
     void about();
     static QString strippedName(const QString &fullFileName);
     void setCurrentFile(const QString &fullFileName);
