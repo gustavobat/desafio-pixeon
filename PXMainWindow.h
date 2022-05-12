@@ -43,6 +43,8 @@ private slots:
     void onListItemDoubleClick(QListWidgetItem * item);
     void onListItemSelected(QListWidgetItem * item);
     void deleteImages();
+    void onBrightnessChange(int value);
+    void onContrastChange(int value);
 };
 
 #endif // PXMAINWINDOW_H

@@ -107,6 +107,8 @@ void PXMainWindow::createCentralWidget() {
     contrast_slider->setMinimum(-100);
     contrast_slider->setMaximum(100);
     contrast_slider->setValue(0);
+    connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
+    connect(contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
     
     groupbox_layout->addWidget(brightness_label);
     groupbox_layout->addWidget(brightness_slider);
@@ -196,4 +198,62 @@ void PXMainWindow::deleteImages() {
     } else {
         onListItemDoubleClick(list->currentItem());
     }
+}
+
+void PXMainWindow::onBrightnessChange(int value) {
+    // Convert the pixmap to QImage
+    QImage tmp = scaled_pixmap.toImage();
+    // Loop all the pixels
+    for (int y = 0; y < tmp.height(); y++) {
+        for (int x = 0; x < tmp.width(); x++) {
+            const auto old_color = tmp.pixelColor(x, y).convertTo(QColor::Hsl);
+            auto new_lightness = old_color.lightness() + value;
+            if (new_lightness > 255) new_lightness = 255;
+            if (new_lightness < 0) new_lightness = 0;
+            const auto new_color = QColor::fromHsl(old_color.hue(), old_color.saturation(),
+                                                   new_lightness, old_color.alpha());
+            tmp.setPixelColor(x, y, new_color);
+        }
+    }
+
+    // Get the coloured pixmap
+    imageLabel.setPixmap(QPixmap::fromImage(tmp));
+    scrollArea->setWidget(&imageLabel);
+    centerScrollBars();
+}
+
+void PXMainWindow::onContrastChange(int value) {
+    
+    // Convert the pixmap to QImage
+    QImage tmp = scaled_pixmap.toImage();
+    int min_light = 1000;
+    int max_light = -1000;
+    
+    // Loop all the pixels
+    for (int y = 0; y < tmp.height(); y++) {
+        for (int x = 0; x < tmp.width(); x++) {
+            const int l_channel = tmp.pixelColor(x, y).convertTo(QColor::Hsl).lightness();
+            if (l_channel > max_light) max_light = l_channel;
+            if (l_channel < min_light) min_light = l_channel;
+        }
+    }
+    
+    // Loop all the pixels
+    for (int y = 0; y < tmp.height(); y++) {
+        for (int x = 0; x < tmp.width(); x++) {
+            const auto old_color = tmp.pixelColor(x, y).convertTo(QColor::Hsl);
+            auto new_lightness =
+                (255 + value) * (old_color.lightness() - min_light) / (max_light - min_light);
+            if (new_lightness > 255) new_lightness = 255;
+            if (new_lightness < 0) new_lightness = 0;
+            const auto new_color = QColor::fromHsl(old_color.hue(), old_color.saturation(),
+                                                   new_lightness, old_color.alpha());
+            tmp.setPixelColor(x, y, new_color);
+        }
+    }
+    
+    // Get the coloured pixmap
+    imageLabel.setPixmap(QPixmap::fromImage(tmp));
+    scrollArea->setWidget(&imageLabel);
+    centerScrollBars();
 }
