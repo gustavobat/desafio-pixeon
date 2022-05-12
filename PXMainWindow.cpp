@@ -50,6 +50,7 @@ void PXMainWindow::createCentralWidget() {
     scrollArea = new QScrollArea();
     scrollArea->setVisible(true);
     scrollArea->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    scrollArea->setWidget(&imageLabel);
     auto *groupBox = new QGroupBox(this);
     
     auto *root_layout = new QHBoxLayout;
@@ -150,7 +151,6 @@ void PXMainWindow::drawImage() {
     if (contrastFactor != 0) adjustContrast();
     
     imageLabel.setPixmap(processed_pixmap);
-    scrollArea->setWidget(&imageLabel);
     centerScrollBars();
 }
 
