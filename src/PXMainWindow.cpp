@@ -77,63 +77,67 @@ void PXMainWindow::createCentralWidget() {
 }
 
 void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
-    
-    // Create vertical layout in groupbox and add list widget and a button
+    // Create vertical layout in groupbox and add list widget and buttons/sliders
     auto *groupbox_layout = new QVBoxLayout;
+    
+    // Create list
     list = new QListWidget();
     groupbox_layout->addWidget(list);
-    connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
-            SLOT(onListItemDoubleClick(QListWidgetItem*)));
     
-    connect(list, SIGNAL(itemPressed(QListWidgetItem*)), this,
-            SLOT(onListItemSelected(QListWidgetItem*)));
-    
+    // Create open/delete image label/buttons
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
-    connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
-
     delete_image_btn = new QPushButton("Delete Image File", this);
     delete_image_btn->setDisabled(true);
+    
+    // Create zoom related label/buttons
+    auto *zoom_label = new QLabel("Zoom options:");
+    auto *increase_zoom_btn = new QPushButton("Increase Zoom", this);
+    auto *decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
+    auto *fit_to_screen_btn = new QPushButton("Fit to screen", this);
+   
+    // Create brightness/contrast related labels/sliders
+    auto *brightness_label = new QLabel("Brightness adjustment:");
+    auto *contrast_label = new QLabel("Contrast adjustment:");
+    
+    const auto create_slider = [groupBox](int min, int max, int initial_val) {
+      auto *slider = new QSlider(Qt::Horizontal, groupBox);
+      slider->setMinimum(min);
+      slider->setMaximum(max);
+      slider->setValue(initial_val);
+      return slider;
+    };
+    
+    auto *brightness_slider = create_slider(-100, 100, 0);
+    auto *contrast_slider = create_slider(-100, 100, 0);
+    
+    // Connect widgets signals to slots
+    connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
+            SLOT(onListItemDoubleClick(QListWidgetItem*)));
+    connect(list, SIGNAL(itemPressed(QListWidgetItem*)), this,
+            SLOT(onListItemSelected(QListWidgetItem*)));
+    connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
     connect(delete_image_btn, SIGNAL(clicked()), this, SLOT(deleteImages()));
-
+    connect(increase_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomIn()));
+    connect(decrease_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomOut()));
+    connect(fit_to_screen_btn, SIGNAL(clicked()), this, SLOT(fitToScreen()));
+    connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
+    connect(contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
+    
+    // Add widgets to layout
     groupbox_layout->addWidget(open_delete_label);
     groupbox_layout->addWidget(open_image_btn);
     groupbox_layout->addWidget(delete_image_btn);
-
-    auto *zoom_label = new QLabel("Zoom options:");
-    auto *increase_zoom_btn = new QPushButton("Increase Zoom", this);
-    connect(increase_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomIn()));
-    auto *decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
-    connect(decrease_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomOut()));
-    auto *fit_to_screen_btn = new QPushButton("Fit to screen", this);
-    connect(fit_to_screen_btn, SIGNAL(clicked()), this, SLOT(fitToScreen()));
-
     groupbox_layout->addWidget(zoom_label);
     groupbox_layout->addWidget(increase_zoom_btn);
     groupbox_layout->addWidget(decrease_zoom_btn);
     groupbox_layout->addWidget(fit_to_screen_btn);
-
-    auto *brightness_label = new QLabel("Brightness adjustment:");
-    auto *contrast_label = new QLabel("Contrast adjustment:");
-
-    const auto create_slider = [groupBox](int min, int max, int initial_val) {
-        auto *slider = new QSlider(Qt::Horizontal, groupBox);
-        slider->setMinimum(min);
-        slider->setMaximum(max);
-        slider->setValue(initial_val);
-        return slider;
-    };
-
-    auto *brightness_slider = create_slider(-100, 100, 0);
-    auto *contrast_slider = create_slider(-100, 100, 0);
-    connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
-    connect(contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
-
     groupbox_layout->addWidget(brightness_label);
     groupbox_layout->addWidget(brightness_slider);
     groupbox_layout->addWidget(contrast_label);
     groupbox_layout->addWidget(contrast_slider);
     
+    // Set groupbox layout
     groupBox->setLayout(groupbox_layout);
 }
 
