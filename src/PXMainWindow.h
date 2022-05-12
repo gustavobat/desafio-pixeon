@@ -31,28 +31,28 @@ private:
     void scaleImage(double factor);
     void centerScrollBars();
 
-    QLabel imageLabel;
-    QPixmap original_pixmap;
-    double scaleFactor = 1.0;
-    int contrastFactor = 0;
-    int brightnessFactor = 0;
+    QLabel m_image_label;
+    QPixmap m_original_pixmap;
+    double m_scale_factor = 1.0;
+    int m_contrast_factor = 0;
+    int m_brightness_factor = 0;
     
-    PXRenderThread render_thread;
+    PXRenderThread m_render_thread;
     
-    QLabel * zoom_label = nullptr;
-    QLabel * brightness_label = nullptr;
-    QLabel * contrast_label = nullptr;
-    QPushButton *delete_image_btn = nullptr;
-    QPushButton *increase_zoom_btn = nullptr;
-    QPushButton *decrease_zoom_btn = nullptr;
-    QPushButton *fit_to_screen_btn = nullptr;
-    QSlider * brightness_slider = nullptr;
-    QSlider * contrast_slider = nullptr;
+    QLabel *m_zoom_label = nullptr;
+    QLabel *m_brightness_label = nullptr;
+    QLabel *m_contrast_label = nullptr;
+    QPushButton *m_delete_image_btn = nullptr;
+    QPushButton *m_increase_zoom_btn = nullptr;
+    QPushButton *m_decrease_zoom_btn = nullptr;
+    QPushButton *m_fit_to_screen_btn = nullptr;
+    QSlider *m_brightness_slider = nullptr;
+    QSlider *m_contrast_slider = nullptr;
     
-    QScrollArea * scrollArea = nullptr;
-    QListWidget * list = nullptr;
+    QScrollArea *m_scroll_area = nullptr;
+    QListWidget *m_list = nullptr;
 
-    std::map<QString, QString> strippedToAbsoluteFileName;
+    std::map<QString, QString> m_stripped_to_absolute_file_name{};
 
 private slots:
     void openImageDialog();

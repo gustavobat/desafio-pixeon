@@ -5,21 +5,21 @@
 #include "PXMainWindow.h"
 #include <QtWidgets>
 
-PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent), render_thread(this) {
+PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent), m_render_thread(this) {
 
     // Resize and center GUI
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
     move(screen()->geometry().center() - frameGeometry().center());
     
-    // Set center alignment of imageLabel that will display the images
-    imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    // Set center alignment of m_image_label that will display the images
+    m_image_label.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     
     // Populate GUI with widgets
     createMenuBar();
     createCentralWidget();
 
     // Create signal/slot connection to rendering thread
-    connect(&render_thread, &PXRenderThread::renderedImage, this, &PXMainWindow::updatePixmap);
+    connect(&m_render_thread, &PXRenderThread::renderedImage, this, &PXMainWindow::updatePixmap);
 }
 
 PXMainWindow::~PXMainWindow() = default;
@@ -52,14 +52,14 @@ void PXMainWindow::createCentralWidget() {
     
     // This method creates the main/central widget and its layout
     // The root layout contains a scroll area and a QGroupBox
-    // with the list viewer and the control panel
+    // with the m_list viewer and the control panel
     auto *root_layout = new QHBoxLayout;
     
     // Create scroll area
-    scrollArea = new QScrollArea();
-    scrollArea->setVisible(true);
-    scrollArea->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    scrollArea->setWidget(&imageLabel);
+    m_scroll_area = new QScrollArea();
+    m_scroll_area->setVisible(true);
+    m_scroll_area->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    m_scroll_area->setWidget(&m_image_label);
     
     // Create group box
     auto *groupBox = new QGroupBox(this);
@@ -67,7 +67,7 @@ void PXMainWindow::createCentralWidget() {
     
     // Add widgets to layout
     root_layout->addWidget(groupBox, 2);
-    root_layout->addWidget(scrollArea, 8);
+    root_layout->addWidget(m_scroll_area, 8);
 
     // Create and set central widget from root layout
     auto *centralWidget = new QWidget();
@@ -77,27 +77,27 @@ void PXMainWindow::createCentralWidget() {
 }
 
 void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
-    // Create vertical layout in groupbox and add list widget and buttons/sliders
+    // Create vertical layout in groupbox and add m_list widget and buttons/sliders
     auto *groupbox_layout = new QVBoxLayout;
     
-    // Create list
-    list = new QListWidget();
-    groupbox_layout->addWidget(list);
+    // Create m_list
+    m_list = new QListWidget();
+    groupbox_layout->addWidget(m_list);
     
     // Create open/delete image label/buttons
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
-    delete_image_btn = new QPushButton("Delete Image File", this);
+    m_delete_image_btn = new QPushButton("Delete Image File", this);
     
     // Create zoom related label/buttons
-    zoom_label = new QLabel("Zoom options:");
-    increase_zoom_btn = new QPushButton("Increase Zoom", this);
-    decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
-    fit_to_screen_btn = new QPushButton("Fit to screen", this);
+    m_zoom_label = new QLabel("Zoom options:");
+    m_increase_zoom_btn = new QPushButton("Increase Zoom", this);
+    m_decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
+    m_fit_to_screen_btn = new QPushButton("Fit to screen", this);
    
     // Create brightness/contrast related labels/sliders
-    brightness_label = new QLabel("Brightness adjustment:");
-    contrast_label = new QLabel("Contrast adjustment:");
+    m_brightness_label = new QLabel("Brightness adjustment:");
+    m_contrast_label = new QLabel("Contrast adjustment:");
     
     const auto create_slider = [groupBox](int min, int max, int initial_val) {
       auto *slider = new QSlider(Qt::Horizontal, groupBox);
@@ -106,33 +106,33 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
       slider->setValue(initial_val);
       return slider;
     };
-    
-    brightness_slider = create_slider(-100, 100, 0);
-    contrast_slider = create_slider(-100, 100, 0);
+
+    m_brightness_slider = create_slider(-100, 100, 0);
+    m_contrast_slider = create_slider(-100, 100, 0);
     
     // Connect widgets signals to slots
-    connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
+    connect(m_list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
             SLOT(onListItemDoubleClick(QListWidgetItem*)));
     connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
-    connect(delete_image_btn, SIGNAL(clicked()), this, SLOT(deleteImages()));
-    connect(increase_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomIn()));
-    connect(decrease_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomOut()));
-    connect(fit_to_screen_btn, SIGNAL(clicked()), this, SLOT(fitToScreen()));
-    connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
-    connect(contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
+    connect(m_delete_image_btn, SIGNAL(clicked()), this, SLOT(deleteImages()));
+    connect(m_increase_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomIn()));
+    connect(m_decrease_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomOut()));
+    connect(m_fit_to_screen_btn, SIGNAL(clicked()), this, SLOT(fitToScreen()));
+    connect(m_brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
+    connect(m_contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
     
     // Add widgets to layout
     groupbox_layout->addWidget(open_delete_label);
     groupbox_layout->addWidget(open_image_btn);
-    groupbox_layout->addWidget(delete_image_btn);
-    groupbox_layout->addWidget(zoom_label);
-    groupbox_layout->addWidget(increase_zoom_btn);
-    groupbox_layout->addWidget(decrease_zoom_btn);
-    groupbox_layout->addWidget(fit_to_screen_btn);
-    groupbox_layout->addWidget(brightness_label);
-    groupbox_layout->addWidget(brightness_slider);
-    groupbox_layout->addWidget(contrast_label);
-    groupbox_layout->addWidget(contrast_slider);
+    groupbox_layout->addWidget(m_delete_image_btn);
+    groupbox_layout->addWidget(m_zoom_label);
+    groupbox_layout->addWidget(m_increase_zoom_btn);
+    groupbox_layout->addWidget(m_decrease_zoom_btn);
+    groupbox_layout->addWidget(m_fit_to_screen_btn);
+    groupbox_layout->addWidget(m_brightness_label);
+    groupbox_layout->addWidget(m_brightness_slider);
+    groupbox_layout->addWidget(m_contrast_label);
+    groupbox_layout->addWidget(m_contrast_slider);
 
     disableControls();
 
@@ -141,27 +141,27 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
 }
 
 void PXMainWindow::disableControls() {
-    delete_image_btn->setDisabled(true);
-    zoom_label->setDisabled(true);
-    increase_zoom_btn->setDisabled(true);
-    decrease_zoom_btn->setDisabled(true);
-    fit_to_screen_btn->setDisabled(true);
-    brightness_label->setDisabled(true);
-    brightness_slider->setDisabled(true);
-    contrast_label->setDisabled(true);
-    contrast_slider->setDisabled(true);
+    m_delete_image_btn->setDisabled(true);
+    m_zoom_label->setDisabled(true);
+    m_increase_zoom_btn->setDisabled(true);
+    m_decrease_zoom_btn->setDisabled(true);
+    m_fit_to_screen_btn->setDisabled(true);
+    m_brightness_label->setDisabled(true);
+    m_brightness_slider->setDisabled(true);
+    m_contrast_label->setDisabled(true);
+    m_contrast_slider->setDisabled(true);
 }
 
 void PXMainWindow::enableControls() {
-    delete_image_btn->setEnabled(true);
-    zoom_label->setEnabled(true);
-    increase_zoom_btn->setEnabled(true);
-    decrease_zoom_btn->setEnabled(true);
-    fit_to_screen_btn->setEnabled(true);
-    brightness_label->setEnabled(true);
-    brightness_slider->setEnabled(true);
-    contrast_label->setEnabled(true);
-    contrast_slider->setEnabled(true);
+    m_delete_image_btn->setEnabled(true);
+    m_zoom_label->setEnabled(true);
+    m_increase_zoom_btn->setEnabled(true);
+    m_decrease_zoom_btn->setEnabled(true);
+    m_fit_to_screen_btn->setEnabled(true);
+    m_brightness_label->setEnabled(true);
+    m_brightness_slider->setEnabled(true);
+    m_contrast_label->setEnabled(true);
+    m_contrast_slider->setEnabled(true);
 }
 
 void PXMainWindow::openImageDialog() {
@@ -175,29 +175,30 @@ void PXMainWindow::loadFile(const QString &fileName) {
 
     const auto stripped_name = strippedName(fileName);
     
-    if (strippedToAbsoluteFileName.find(stripped_name) != strippedToAbsoluteFileName.end()) {
+    if (m_stripped_to_absolute_file_name.find(stripped_name) !=
+        m_stripped_to_absolute_file_name.end()) {
         QMessageBox msg_box;
         msg_box.setText("Please select a file with a different name.");
         msg_box.exec();
         return;
     }
-    
-    strippedToAbsoluteFileName.insert({stripped_name, fileName});
 
-    list->addItem(stripped_name);
+    m_stripped_to_absolute_file_name.insert({stripped_name, fileName});
+
+    m_list->addItem(stripped_name);
     setCurrentFile(fileName);
     enableControls();
 }
 
 void PXMainWindow::setCurrentFile(const QString &fullFileName) {
-    original_pixmap = QPixmap(fullFileName);
+    m_original_pixmap = QPixmap(fullFileName);
     drawImage();
 }
 
 void PXMainWindow::drawImage() {
-    const QSize new_size = scaleFactor * scrollArea->maximumViewportSize();
-    imageLabel.resize(new_size);
-    render_thread.render(brightnessFactor, contrastFactor, new_size, &original_pixmap);
+    const QSize new_size = m_scale_factor * m_scroll_area->maximumViewportSize();
+    m_image_label.resize(new_size);
+    m_render_thread.render(m_brightness_factor, m_contrast_factor, new_size, &m_original_pixmap);
 }
 
 QString PXMainWindow::strippedName(const QString &fullFileName) {
@@ -205,12 +206,12 @@ QString PXMainWindow::strippedName(const QString &fullFileName) {
 }
 
 void PXMainWindow::fitToScreen() {
-    scaleFactor = 1.0;
+    m_scale_factor = 1.0;
     drawImage();
 }
 
 void PXMainWindow::scaleImage(const double factor) {
-    scaleFactor *= factor;
+    m_scale_factor *= factor;
     drawImage();
 }
 
@@ -219,8 +220,8 @@ void PXMainWindow::zoomIn() { scaleImage(1.25); }
 void PXMainWindow::zoomOut() { scaleImage(0.8); }
 
 void PXMainWindow::centerScrollBars() {
-    std::array<QScrollBar *, 2> bars = {scrollArea->horizontalScrollBar(),
-                                        scrollArea->verticalScrollBar()};
+    std::array<QScrollBar *, 2> bars = {m_scroll_area->horizontalScrollBar(),
+                                        m_scroll_area->verticalScrollBar()};
     std::for_each(bars.begin(), bars.end(), [](QScrollBar *bar) {
         const auto range = bar->maximum() - bar->minimum() + bar->pageStep();
         bar->setValue(int((range - bar->pageStep()) / 2));
@@ -229,41 +230,41 @@ void PXMainWindow::centerScrollBars() {
 
 void PXMainWindow::onListItemDoubleClick(QListWidgetItem *item) {
     const auto text = item->text();
-    if (strippedToAbsoluteFileName.find(text) != strippedToAbsoluteFileName.end()) {
-        const auto file_path = strippedToAbsoluteFileName.find(text)->second;
+    if (m_stripped_to_absolute_file_name.find(text) != m_stripped_to_absolute_file_name.end()) {
+        const auto file_path = m_stripped_to_absolute_file_name.find(text)->second;
         setCurrentFile(file_path);
     }
 }
 
 void PXMainWindow::deleteImages() {
-    QList<QListWidgetItem*> items = list->selectedItems();
+    QList<QListWidgetItem*> items = m_list->selectedItems();
     foreach(QListWidgetItem * item, items) {
         const QString text = item->text();
-        delete list->takeItem(list->row(item));
-        strippedToAbsoluteFileName.erase(text);
+        delete m_list->takeItem(m_list->row(item));
+        m_stripped_to_absolute_file_name.erase(text);
     }
     
-    if (list->selectionModel()->selectedIndexes().isEmpty()) {
-        list->clear();
+    if (m_list->selectionModel()->selectedIndexes().isEmpty()) {
+        m_list->clear();
         disableControls();
-        imageLabel.clear();
+        m_image_label.clear();
     } else {
-        onListItemDoubleClick(list->currentItem());
+        onListItemDoubleClick(m_list->currentItem());
     }
 }
 
 void PXMainWindow::onBrightnessChange(int value) {
-    brightnessFactor = value;
+    m_brightness_factor = value;
     drawImage();
 }
 
 void PXMainWindow::onContrastChange(int value) {
-    contrastFactor = value;
+    m_contrast_factor = value;
     drawImage();
 }
 
 void PXMainWindow::updatePixmap(const QPixmap &pixmap) {
-    imageLabel.setPixmap(pixmap);
+    m_image_label.setPixmap(pixmap);
     centerScrollBars();
     update();
 }
