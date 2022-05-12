@@ -21,12 +21,12 @@ public:
 private:
     void createMenuBar();
     void createCentralWidget();
-    void createGroupBoxWidgets(QGroupBox *groupBox);
+    void createGroupBoxWidgets(QGroupBox *group_box);
     void about();
     void disableControls();
     void enableControls();
-    static QString strippedName(const QString &fullFileName);
-    void setCurrentFile(const QString &fullFileName);
+    static QString strippedName(const QString &full_file_name);
+    void setCurrentFile(const QString &full_file_name);
     void drawImage();
     void scaleImage(double factor);
     void centerScrollBars();
@@ -56,7 +56,7 @@ private:
 
 private slots:
     void openImageDialog();
-    void loadFile(const QString &fileName);
+    void loadFile(const QString &file_name);
     void fitToScreen();
     void zoomIn();
     void zoomOut();

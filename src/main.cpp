@@ -11,8 +11,8 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     QApplication::setApplicationDisplayName("Desafio Pixeon");
 
-    PXMainWindow mainWindow;
-    mainWindow.show();
+    PXMainWindow main_window;
+    main_window.show();
 
     return QApplication::exec();
 }

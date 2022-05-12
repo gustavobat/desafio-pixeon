@@ -62,21 +62,21 @@ void PXMainWindow::createCentralWidget() {
     m_scroll_area->setWidget(&m_image_label);
     
     // Create group box
-    auto *groupBox = new QGroupBox(this);
-    createGroupBoxWidgets(groupBox);
+    auto *group_box = new QGroupBox(this);
+    createGroupBoxWidgets(group_box);
     
     // Add widgets to layout
-    root_layout->addWidget(groupBox, 2);
+    root_layout->addWidget(group_box, 2);
     root_layout->addWidget(m_scroll_area, 8);
 
     // Create and set central widget from root layout
-    auto *centralWidget = new QWidget();
-    centralWidget->setLayout(root_layout);
-    setCentralWidget(centralWidget);
+    auto *central_widget = new QWidget();
+    central_widget->setLayout(root_layout);
+    setCentralWidget(central_widget);
 
 }
 
-void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
+void PXMainWindow::createGroupBoxWidgets(QGroupBox *group_box) {
     // Create vertical layout in groupbox and add m_list widget and buttons/sliders
     auto *groupbox_layout = new QVBoxLayout;
     
@@ -99,8 +99,8 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
     m_brightness_label = new QLabel("Brightness adjustment:");
     m_contrast_label = new QLabel("Contrast adjustment:");
     
-    const auto create_slider = [groupBox](int min, int max, int initial_val) {
-      auto *slider = new QSlider(Qt::Horizontal, groupBox);
+    const auto create_slider = [group_box](int min, int max, int initial_val) {
+      auto *slider = new QSlider(Qt::Horizontal, group_box);
       slider->setMinimum(min);
       slider->setMaximum(max);
       slider->setValue(initial_val);
@@ -137,7 +137,7 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
     disableControls();
 
     // Set groupbox layout
-    groupBox->setLayout(groupbox_layout);
+    group_box->setLayout(groupbox_layout);
 }
 
 void PXMainWindow::disableControls() {
@@ -165,15 +165,15 @@ void PXMainWindow::enableControls() {
 }
 
 void PXMainWindow::openImageDialog() {
-    QString fileName = QFileDialog::getOpenFileName(
+    QString file_name = QFileDialog::getOpenFileName(
         this, tr("Open Image File"), "",
         tr("Image Files (*.png *.jpg *.jpeg  *.bmp)"));
-    if (!fileName.isEmpty()) loadFile(fileName);
+    if (!file_name.isEmpty()) loadFile(file_name);
 }
 
-void PXMainWindow::loadFile(const QString &fileName) {
+void PXMainWindow::loadFile(const QString &file_name) {
 
-    const auto stripped_name = strippedName(fileName);
+    const auto stripped_name = strippedName(file_name);
     
     if (m_stripped_to_absolute_file_name.find(stripped_name) !=
         m_stripped_to_absolute_file_name.end()) {
@@ -183,15 +183,15 @@ void PXMainWindow::loadFile(const QString &fileName) {
         return;
     }
 
-    m_stripped_to_absolute_file_name.insert({stripped_name, fileName});
+    m_stripped_to_absolute_file_name.insert({stripped_name, file_name});
 
     m_list->addItem(stripped_name);
-    setCurrentFile(fileName);
+    setCurrentFile(file_name);
     enableControls();
 }
 
-void PXMainWindow::setCurrentFile(const QString &fullFileName) {
-    m_original_pixmap = QPixmap(fullFileName);
+void PXMainWindow::setCurrentFile(const QString &full_file_name) {
+    m_original_pixmap = QPixmap(full_file_name);
     drawImage();
 }
 
@@ -201,8 +201,8 @@ void PXMainWindow::drawImage() {
     m_render_thread.render(m_brightness_factor, m_contrast_factor, new_size, &m_original_pixmap);
 }
 
-QString PXMainWindow::strippedName(const QString &fullFileName) {
-    return QFileInfo(fullFileName).fileName();
+QString PXMainWindow::strippedName(const QString &full_file_name) {
+    return QFileInfo(full_file_name).fileName();
 }
 
 void PXMainWindow::fitToScreen() {
