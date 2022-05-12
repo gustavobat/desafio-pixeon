@@ -16,8 +16,8 @@ class PXRenderThread : public QThread {
 public:
     explicit PXRenderThread(QObject *parent = nullptr);
     ~PXRenderThread() override;
-
-    void render(int brightnessFactor, int contrastFactor, QSize resultSize, QPixmap * orig_pixmap);
+    
+    void render(int brightness_factor, int contrast_factor, QSize size, QPixmap * orig_pixmap);
 
 signals:
     void renderedImage(const QPixmap& result_pixmap);
