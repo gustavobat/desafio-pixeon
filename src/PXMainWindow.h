@@ -30,13 +30,22 @@ private:
     void centerScrollBars();
 
     QLabel imageLabel;
-    QPushButton *delete_image_btn = nullptr;
     QPixmap original_pixmap;
     double scaleFactor = 1.0;
     int contrastFactor = 0;
     int brightnessFactor = 0;
     
     PXRenderThread render_thread;
+    
+    QLabel * zoom_label = nullptr;
+    QLabel * brightness_label = nullptr;
+    QLabel * contrast_label = nullptr;
+    QPushButton *delete_image_btn = nullptr;
+    QPushButton *increase_zoom_btn = nullptr;
+    QPushButton *decrease_zoom_btn = nullptr;
+    QPushButton *fit_to_screen_btn = nullptr;
+    QSlider * brightness_slider = nullptr;
+    QSlider * contrast_slider = nullptr;
     
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;

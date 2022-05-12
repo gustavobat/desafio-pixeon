@@ -91,14 +91,14 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
     delete_image_btn->setDisabled(true);
     
     // Create zoom related label/buttons
-    auto *zoom_label = new QLabel("Zoom options:");
-    auto *increase_zoom_btn = new QPushButton("Increase Zoom", this);
-    auto *decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
-    auto *fit_to_screen_btn = new QPushButton("Fit to screen", this);
+    zoom_label = new QLabel("Zoom options:");
+    increase_zoom_btn = new QPushButton("Increase Zoom", this);
+    decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
+    fit_to_screen_btn = new QPushButton("Fit to screen", this);
    
     // Create brightness/contrast related labels/sliders
-    auto *brightness_label = new QLabel("Brightness adjustment:");
-    auto *contrast_label = new QLabel("Contrast adjustment:");
+    brightness_label = new QLabel("Brightness adjustment:");
+    contrast_label = new QLabel("Contrast adjustment:");
     
     const auto create_slider = [groupBox](int min, int max, int initial_val) {
       auto *slider = new QSlider(Qt::Horizontal, groupBox);
@@ -108,8 +108,8 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
       return slider;
     };
     
-    auto *brightness_slider = create_slider(-100, 100, 0);
-    auto *contrast_slider = create_slider(-100, 100, 0);
+    brightness_slider = create_slider(-100, 100, 0);
+    contrast_slider = create_slider(-100, 100, 0);
     
     // Connect widgets signals to slots
     connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
