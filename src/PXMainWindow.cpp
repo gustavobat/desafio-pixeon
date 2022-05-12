@@ -233,6 +233,7 @@ void PXMainWindow::deleteImages() {
         list->model()->removeRow(singleIndex.row());
     }
     if (list->selectionModel()->selectedIndexes().isEmpty()) {
+        list->clear();
         disableControls();
         imageLabel.clear();
     } else {
