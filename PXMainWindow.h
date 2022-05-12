@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QScrollArea>
 
+#include "PXRenderThread.h"
+
 class PXMainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -23,8 +25,6 @@ private:
     void drawImage();
     void scaleImage(double factor);
     void centerScrollBars();
-    void adjustBrightness();
-    void adjustContrast();
 
     QLabel imageLabel;
     QPushButton *delete_image_btn = nullptr;
@@ -33,6 +33,8 @@ private:
     double scaleFactor = 1.0;
     int contrastFactor = 0;
     int brightnessFactor = 0;
+    
+    PXRenderThread render_thread;
     
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
@@ -50,6 +52,7 @@ private slots:
     void deleteImages();
     void onBrightnessChange(int value);
     void onContrastChange(int value);
+    void updatePixmap(const QPixmap &pixmap);
 };
 
 #endif // PXMAINWINDOW_H
