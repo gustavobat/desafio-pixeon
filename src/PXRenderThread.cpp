@@ -23,6 +23,7 @@ void PXRenderThread::render(int brightness_factor, int contrast_factor, QSize si
     this->m_result_size = size;
     this->m_original_pixmap = orig_pixmap;
     
+    // Start task of restart current one
     if (!isRunning()) {
         start(LowPriority);
     } else {
@@ -36,15 +37,19 @@ void PXRenderThread::render(int brightness_factor, int contrast_factor, QSize si
         m_mutex.lock();
         const QSize result_size = this->m_result_size;
         m_mutex.unlock();
-
+    
+        // Scale pixmap
         QPixmap processed_pixmap =
             m_original_pixmap->scaled(result_size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
+        // Adjust brightness/contrast if needed
         if (m_brightness_factor != 0) adjustBrightness(processed_pixmap);
         if (m_contrast_factor != 0) adjustContrast(processed_pixmap);
 
+        // Emit signal with rendered image
         if (!m_restart) emit renderedImage(processed_pixmap);
 
+        // Put thread to wait
         m_mutex.lock();
         if (!m_restart) m_condition.wait(&m_mutex);
         m_restart = false;
@@ -53,10 +58,10 @@ void PXRenderThread::render(int brightness_factor, int contrast_factor, QSize si
 }
 
 void PXRenderThread::adjustBrightness(QPixmap& processed_pixmap) const {
-    // Convert the m_original_pixmap to QImage
+    // Convert the Pixmap to QImage
     QImage tmp = processed_pixmap.toImage();
     
-    // Loop all the pixels
+    // Loop all the pixels and update lightness channel
     for (int y = 0; y < tmp.height(); y++) {
         for (int x = 0; x < tmp.width(); x++) {
             const auto old_color = tmp.pixelColor(x, y).convertTo(QColor::Hsl);
@@ -69,12 +74,13 @@ void PXRenderThread::adjustBrightness(QPixmap& processed_pixmap) const {
         }
     }
     
+    // Convert Pixmap back from QImage
     processed_pixmap = QPixmap::fromImage(tmp);
 }
 
 void PXRenderThread::adjustContrast(QPixmap& processed_pixmap) const {
     
-    // Convert the m_original_pixmap to QImage
+    // Convert Pixmap QImage
     QImage tmp = processed_pixmap.toImage();
     int min_light = 10000;
     int max_light = -10000;
@@ -88,7 +94,7 @@ void PXRenderThread::adjustContrast(QPixmap& processed_pixmap) const {
         }
     }
     
-    // Loop all the pixels and update color
+    // Loop all the pixels and update lightness channel
     for (int y = 0; y < tmp.height(); y++) {
         for (int x = 0; x < tmp.width(); x++) {
             const auto old_color = tmp.pixelColor(x, y).convertTo(QColor::Hsl);
@@ -102,5 +108,6 @@ void PXRenderThread::adjustContrast(QPixmap& processed_pixmap) const {
         }
     }
     
+    // Convert Pixmap back from QImage
     processed_pixmap = QPixmap::fromImage(tmp);
 }
