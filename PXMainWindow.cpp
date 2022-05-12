@@ -95,18 +95,20 @@ void PXMainWindow::createCentralWidget() {
     groupbox_layout->addWidget(increase_zoom_btn);
     groupbox_layout->addWidget(decrease_zoom_btn);
     groupbox_layout->addWidget(fit_to_screen_btn);
-    
+
     auto *brightness_label = new QLabel("Brightness adjustment:");
     auto *contrast_label = new QLabel("Contrast adjustment:");
-    
-    auto * brightness_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
-    auto * contrast_slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
-    brightness_slider->setMinimum(-100);
-    brightness_slider->setMaximum(100);
-    brightness_slider->setValue(0);
-    contrast_slider->setMinimum(-100);
-    contrast_slider->setMaximum(100);
-    contrast_slider->setValue(0);
+
+    const auto create_slider = [groupBox](int min, int max, int initial_val) {
+        auto *slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
+        slider->setMinimum(min);
+        slider->setMaximum(max);
+        slider->setValue(initial_val);
+        return slider;
+    };
+
+    auto *brightness_slider = create_slider(-100, 100, 0);
+    auto *contrast_slider = create_slider(-100, 100, 0);
     connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
     connect(contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
     
