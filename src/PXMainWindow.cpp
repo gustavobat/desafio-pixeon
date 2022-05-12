@@ -10,7 +10,10 @@ PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent), render_thread
     // Resize and center GUI
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
     move(screen()->geometry().center() - frameGeometry().center());
-
+    
+    // Set center alignment of imageLabel that will display the images
+    imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    
     // Populate GUI with widgets
     createMenuBar();
     createCentralWidget();
@@ -45,8 +48,6 @@ void PXMainWindow::about() {
 }
 
 void PXMainWindow::createCentralWidget() {
-    
-    imageLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     // Root horizontal root_layout, contains a scroll area and
     // a group of QGroupBox for editing and the list viewer
     scrollArea = new QScrollArea();
