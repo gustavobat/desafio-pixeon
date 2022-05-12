@@ -28,6 +28,8 @@ private:
     QPushButton *delete_image_btn = nullptr;
     QPixmap pixmap;
     double scaleFactor = 1.0;
+    int contrastFactor = 0;
+    int brightnessFactor = 0;
     
     QScrollArea * scrollArea = nullptr;
     QListWidget * list = nullptr;
