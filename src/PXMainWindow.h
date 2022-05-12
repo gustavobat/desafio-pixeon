@@ -12,8 +12,9 @@
 #include "PXRenderThread.h"
 
 /**
- * \brief PXMainWindow class: responsible for the coordinating GUI inputs and
- * displaying a list of images and the widgets that control them.
+ * \brief PXMainWindow class: responsible for controlling GUI input, displaying
+ * and processing the contents of an image file.
+ * The file can be set from a list, that handles multiple file entries.
  */
 class PXMainWindow : public QMainWindow {
     Q_OBJECT
