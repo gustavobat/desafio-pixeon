@@ -18,6 +18,7 @@ PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent), render_thread
     createMenuBar();
     createCentralWidget();
 
+    // Create signal/slot connection to rendering thread
     connect(&render_thread, &PXRenderThread::renderedImage, this, &PXMainWindow::updatePixmap);
 }
 
