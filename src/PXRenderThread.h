@@ -1,7 +1,3 @@
-//
-// Created by Gustavo on 5/12/22.
-//
-
 #ifndef PXRENDERTHREAD_H
 #define PXRENDERTHREAD_H
 

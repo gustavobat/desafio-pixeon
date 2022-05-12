@@ -1,7 +1,3 @@
-//
-// Created by Gustavo on 5/12/22.
-//
-
 #include "PXRenderThread.h"
 #include <QImage>
 #include <QPixmap>

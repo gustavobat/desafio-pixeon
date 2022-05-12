@@ -1,7 +1,3 @@
-//
-// Created by Gustavo Batistela on 5/10/22.
-//
-
 #include "PXMainWindow.h"
 #include <QApplication>
 
