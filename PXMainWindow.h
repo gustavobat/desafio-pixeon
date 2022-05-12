@@ -26,7 +26,8 @@ private:
 
     QLabel imageLabel;
     QPushButton *delete_image_btn = nullptr;
-    QPixmap pixmap;
+    QPixmap original_pixmap;
+    QPixmap processed_pixmap;
     double scaleFactor = 1.0;
     int contrastFactor = 0;
     int brightnessFactor = 0;

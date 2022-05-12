@@ -135,15 +135,15 @@ void PXMainWindow::loadFile(const QString &fileName) {
 }
 
 void PXMainWindow::setCurrentFile(const QString &fullFileName) {
-    pixmap = QPixmap(fullFileName);
+    original_pixmap = QPixmap(fullFileName);
     drawImage();
 }
 
 void PXMainWindow::drawImage() {
-    imageLabel.resize(scaleFactor * scrollArea->maximumViewportSize() );
-    QPixmap scaled_pixmap =
-        pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    imageLabel.setPixmap(scaled_pixmap);
+    imageLabel.resize(scaleFactor * scrollArea->maximumViewportSize());
+    processed_pixmap =
+        original_pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    imageLabel.setPixmap(processed_pixmap);
     scrollArea->setWidget(&imageLabel);
     centerScrollBars();
 }
