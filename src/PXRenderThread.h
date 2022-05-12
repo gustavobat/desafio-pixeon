@@ -19,7 +19,7 @@ signals:
     void renderedImage(const QPixmap& result_pixmap);
 
 protected:
-    [[noreturn]] void run() override;
+    void run() override;
 
 private:
     void adjustBrightness(QPixmap &processed_pixmap) const;
@@ -33,6 +33,7 @@ private:
     QMutex m_mutex;
     QWaitCondition m_condition;
     bool m_restart = false;
+    bool m_abort = false;
 };
 
 #endif // PXRENDERTHREAD_H

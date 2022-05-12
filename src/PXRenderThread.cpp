@@ -6,6 +6,7 @@ PXRenderThread::PXRenderThread(QObject *parent) : QThread(parent) { }
 
 PXRenderThread::~PXRenderThread() {
     m_mutex.lock();
+    m_abort = true;
     m_condition.wakeOne();
     m_mutex.unlock();
     wait();
@@ -29,12 +30,15 @@ void PXRenderThread::render(int brightness_factor, int contrast_factor, QSize si
     }
 }
 
-[[noreturn]] void PXRenderThread::run() {
+void PXRenderThread::run() {
     forever {
         m_mutex.lock();
         const QSize result_size = this->m_result_size;
         m_mutex.unlock();
-    
+        
+        if (m_restart) break;
+        if (m_abort) return;
+        
         // Scale pixmap
         QPixmap processed_pixmap =
             m_original_pixmap->scaled(result_size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
