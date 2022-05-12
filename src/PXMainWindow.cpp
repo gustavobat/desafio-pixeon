@@ -113,8 +113,6 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *groupBox) {
     // Connect widgets signals to slots
     connect(list, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
             SLOT(onListItemDoubleClick(QListWidgetItem*)));
-    connect(list, SIGNAL(itemPressed(QListWidgetItem*)), this,
-            SLOT(onListItemSelected(QListWidgetItem*)));
     connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
     connect(delete_image_btn, SIGNAL(clicked()), this, SLOT(deleteImages()));
     connect(increase_zoom_btn, SIGNAL(clicked()), this, SLOT(zoomIn()));
