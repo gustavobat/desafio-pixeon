@@ -73,11 +73,18 @@ void PXMainWindow::createCentralWidget() {
     
     connect(list, SIGNAL(itemPressed(QListWidgetItem*)), this,
             SLOT(onListItemSelected(QListWidgetItem*)));
+
+    populateGroupBoxLayout(groupBox, groupbox_layout);
+
+    groupBox->setLayout(groupbox_layout);
+}
+
+void PXMainWindow::populateGroupBoxLayout(QGroupBox *groupBox, QVBoxLayout *groupbox_layout) {
     
     auto *open_delete_label = new QLabel("Open/Delete Image:");
     auto *open_image_btn = new QPushButton("Open Image File", this);
     connect(open_image_btn, SIGNAL(clicked()), this, SLOT(openImageDialog()));
-    
+
     delete_image_btn = new QPushButton("Delete Image File", this);
     delete_image_btn->setDisabled(true);
     connect(delete_image_btn, SIGNAL(clicked()), this, SLOT(deleteImages()));
@@ -103,7 +110,7 @@ void PXMainWindow::createCentralWidget() {
     auto *contrast_label = new QLabel("Contrast adjustment:");
 
     const auto create_slider = [groupBox](int min, int max, int initial_val) {
-        auto *slider = new QSlider(Qt::Orientation::Horizontal, groupBox);
+        auto *slider = new QSlider(Qt::Horizontal, groupBox);
         slider->setMinimum(min);
         slider->setMaximum(max);
         slider->setValue(initial_val);
@@ -114,13 +121,11 @@ void PXMainWindow::createCentralWidget() {
     auto *contrast_slider = create_slider(-100, 100, 0);
     connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(onBrightnessChange(int)));
     connect(contrast_slider, SIGNAL(valueChanged(int)), this, SLOT(onContrastChange(int)));
-    
+
     groupbox_layout->addWidget(brightness_label);
     groupbox_layout->addWidget(brightness_slider);
     groupbox_layout->addWidget(contrast_label);
     groupbox_layout->addWidget(contrast_slider);
-    
-    groupBox->setLayout(groupbox_layout);
 }
 
 void PXMainWindow::openImageDialog() {

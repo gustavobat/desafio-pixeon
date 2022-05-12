@@ -1,11 +1,13 @@
 #ifndef PXMAINWINDOW_H
 #define PXMAINWINDOW_H
 
+#include <QGroupBox>
 #include <QLabel>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QVBoxLayout>
 
 #include "PXRenderThread.h"
 
@@ -19,6 +21,7 @@ public:
 private:
     void createMenuBar();
     void createCentralWidget();
+    void populateGroupBoxLayout(QGroupBox *groupBox, QVBoxLayout *groupbox_layout);
     void about();
     static QString strippedName(const QString &fullFileName);
     void setCurrentFile(const QString &fullFileName);
