@@ -228,10 +228,13 @@ void PXMainWindow::onListItemDoubleClick(QListWidgetItem *item) {
 }
 
 void PXMainWindow::deleteImages() {
-    QModelIndexList selectedList = list->selectionModel()->selectedIndexes();
-    for(const QModelIndex& singleIndex : selectedList) {
-        list->model()->removeRow(singleIndex.row());
+    QList<QListWidgetItem*> items = list->selectedItems();
+    foreach(QListWidgetItem * item, items) {
+        const QString text = item->text();
+        delete list->takeItem(list->row(item));
+        strippedToAbsoluteFileName.erase(text);
     }
+    
     if (list->selectionModel()->selectedIndexes().isEmpty()) {
         list->clear();
         disableControls();
