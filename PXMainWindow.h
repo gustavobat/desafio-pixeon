@@ -23,6 +23,8 @@ private:
     void drawImage();
     void scaleImage(double factor);
     void centerScrollBars();
+    void adjustBrightness();
+    void adjustContrast();
 
     QLabel imageLabel;
     QPushButton *delete_image_btn = nullptr;

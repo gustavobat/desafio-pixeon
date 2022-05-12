@@ -143,6 +143,10 @@ void PXMainWindow::drawImage() {
     imageLabel.resize(scaleFactor * scrollArea->maximumViewportSize());
     processed_pixmap =
         original_pixmap.scaled(imageLabel.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    
+    if (brightnessFactor != 0) adjustBrightness();
+    if (contrastFactor != 0) adjustContrast();
+    
     imageLabel.setPixmap(processed_pixmap);
     scrollArea->setWidget(&imageLabel);
     centerScrollBars();
@@ -201,13 +205,24 @@ void PXMainWindow::deleteImages() {
 }
 
 void PXMainWindow::onBrightnessChange(int value) {
-    // Convert the pixmap to QImage
-    QImage tmp = scaled_pixmap.toImage();
+    brightnessFactor = value;
+    drawImage();
+}
+
+void PXMainWindow::onContrastChange(int value) {
+    contrastFactor = value;
+    drawImage();
+}
+
+void PXMainWindow::adjustBrightness() {
+    // Convert the original_pixmap to QImage
+    QImage tmp = processed_pixmap.toImage();
+    
     // Loop all the pixels
     for (int y = 0; y < tmp.height(); y++) {
         for (int x = 0; x < tmp.width(); x++) {
             const auto old_color = tmp.pixelColor(x, y).convertTo(QColor::Hsl);
-            auto new_lightness = old_color.lightness() + value;
+            auto new_lightness = old_color.lightness() + brightnessFactor;
             if (new_lightness > 255) new_lightness = 255;
             if (new_lightness < 0) new_lightness = 0;
             const auto new_color = QColor::fromHsl(old_color.hue(), old_color.saturation(),
@@ -215,21 +230,18 @@ void PXMainWindow::onBrightnessChange(int value) {
             tmp.setPixelColor(x, y, new_color);
         }
     }
-
-    // Get the coloured pixmap
-    imageLabel.setPixmap(QPixmap::fromImage(tmp));
-    scrollArea->setWidget(&imageLabel);
-    centerScrollBars();
+    
+    processed_pixmap = QPixmap::fromImage(tmp);
 }
 
-void PXMainWindow::onContrastChange(int value) {
+void PXMainWindow::adjustContrast() {
     
-    // Convert the pixmap to QImage
-    QImage tmp = scaled_pixmap.toImage();
-    int min_light = 1000;
-    int max_light = -1000;
+    // Convert the original_pixmap to QImage
+    QImage tmp = processed_pixmap.toImage();
+    int min_light = 10000;
+    int max_light = -10000;
     
-    // Loop all the pixels
+    // Loop all the pixels and retrieve min/max lightness channel values
     for (int y = 0; y < tmp.height(); y++) {
         for (int x = 0; x < tmp.width(); x++) {
             const int l_channel = tmp.pixelColor(x, y).convertTo(QColor::Hsl).lightness();
@@ -238,12 +250,12 @@ void PXMainWindow::onContrastChange(int value) {
         }
     }
     
-    // Loop all the pixels
+    // Loop all the pixels and update color
     for (int y = 0; y < tmp.height(); y++) {
         for (int x = 0; x < tmp.width(); x++) {
             const auto old_color = tmp.pixelColor(x, y).convertTo(QColor::Hsl);
-            auto new_lightness =
-                (255 + value) * (old_color.lightness() - min_light) / (max_light - min_light);
+            auto new_lightness = (255 + contrastFactor) *
+                                 (old_color.lightness() - min_light) / (max_light - min_light);
             if (new_lightness > 255) new_lightness = 255;
             if (new_lightness < 0) new_lightness = 0;
             const auto new_color = QColor::fromHsl(old_color.hue(), old_color.saturation(),
@@ -252,8 +264,5 @@ void PXMainWindow::onContrastChange(int value) {
         }
     }
     
-    // Get the coloured pixmap
-    imageLabel.setPixmap(QPixmap::fromImage(tmp));
-    scrollArea->setWidget(&imageLabel);
-    centerScrollBars();
+    processed_pixmap = QPixmap::fromImage(tmp);
 }
