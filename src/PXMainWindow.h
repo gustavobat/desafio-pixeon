@@ -48,7 +48,6 @@ private:
     QPushButton *m_fit_to_screen_btn = nullptr;
     QSlider *m_brightness_slider = nullptr;
     QSlider *m_contrast_slider = nullptr;
-    
     QScrollArea *m_scroll_area = nullptr;
     QListWidget *m_list = nullptr;
 
