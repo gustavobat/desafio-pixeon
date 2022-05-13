@@ -252,6 +252,11 @@ void PXMainWindow::deleteImages() {
     } else {
         onListItemDoubleClick(m_list->currentItem());
     }
+    m_brightness_slider->setValue(0);
+    m_brightness_factor = 0.;
+    m_contrast_slider->setValue(0);
+    m_contrast_factor = 0.;
+    m_scale_factor = 1.;
 }
 
 void PXMainWindow::onBrightnessChange(int value) {
