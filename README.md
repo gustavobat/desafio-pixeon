@@ -73,7 +73,7 @@ fique bloqueada a novos comandos enquanto espera uma imagem ser renderizada.
 
 
 ## Futuras melhorias
-- No momento, não testes de integração e unitários. Implementá-los é uma tarefa de muita importância para 
+- No momento, não há testes de integração e unitários. Implementá-los é uma tarefa de muita importância para 
 garantir segurança perante mudanças no código.
 - O programa deve ser testado com address/UB sanitizers e analisadores estáticos (clang-tidy/cppcheck).
 - O programa foi compilado numa única máquina Linux (Ubuntu 20.04), versão de Qt 5.12.8 e compilado com GCC 9.4. 
