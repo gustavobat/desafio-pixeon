@@ -26,7 +26,7 @@ A animação a seguir mostra um exemplo de uso deste programa:
 - Os nomes dos arquivos abertos são inseridos na lista. Um duplo clique sobre um item da lista altera o arquivo exibido.
 - Por razões estéticas, a lista exibe apenas o nome do arquivo, e não seu caminho absoluto. Se um usuário tenta abrir
  um arquivo de mesmo nome, mas de diretórios diferentes, ele é avisado que isto não é possível através de uma caixa
-  de mensagem. Este comportamento é mencionado na seção **Futuras Melhorias**.
+  de mensagem. Este comportamento é mencionado na seção **Futuras melhorias**.
 - O botão **Delete Image File** remove o arquivo selecionado da lista e muda a exibição para o próximo arquivo
   selecionado, se existir. Caso contrário, a tela inicial é exibida.
 - Se nenhum arquivo é selecionado, o botão **Delete Image Files** remove todas as imagens. Este comportamento é
@@ -42,7 +42,7 @@ A animação a seguir mostra um exemplo de uso deste programa:
   - Quando o arquivo a ser exibido é alterado, os controles voltam para o valor padrão.
   
 
-## Notas de implementação
+## Detalhes de implementação
 
 Para a implementação, foram criadas duas classes: `PXMainWindow` e `PXRenderThread`, resumidas abaixo:
 
@@ -55,6 +55,19 @@ mudança na imagem, a _render thread_ é acionada e a imagem renderizada é reto
 conecta no objeto _main window_. Apesar das operações de processamento serem leves, isto evita que a interface gráfica
 fique bloqueada a novos comandos enquanto espera uma imagem ser renderizada.
 
-
-
 ## Futuras melhorias
+- No momento, não testes de integração e unitários. Implementá-los é uma tarefa de muita importância para 
+garantir segurança perante mudanças no código.
+- O programa deve ser testado com address/UB sanitizers e analisadores estáticos (clang-tidy/cppcheck).
+- O programa foi compilado numa única máquina Linux (Ubuntu 20.04), versão de Qt 5.12.8 e compilado com GCC 9.4. 
+ Testes devem ser feitos para garantir funcionamento em outros sistemas/versões.
+- As funções _rotate_ e _pan_ não foram implementadas por questões de prazo e podem ser criadas futuramente.
+- Apesar do comportamento de remover todas as imagens se nenhuma é selecionada não ser exatamente um _bug_,
+não é intuitivo para o usuário que isso aconteça e poderia ser removido em futuras versões.
+- O comportamento de impedir que duas imagens com o mesmo nome sejam abertas não é o melhor em termos de _user experience_.
+Opções para lidar com esse caso seriam acrescentar um sufixo no nome do arquivo para diferenciação ou então 
+um _alt text_ sobre o item da lista indicando o caminho completo do arquivo.
+- Cada vez que um item da lista é selecionado, a imagem é carregada do sistema novamente através de seu caminho completo.
+Isto gera um erro se o usuário remove a imagem do sistema durante a execução do programa.
+Esta situação deve ser lidada corretamente ao carregar o arquivo para que o nome de um arquivo inexistente não permaneça na lista de arquivos.
+- Pesquisar se há espaço para otimização nos algoritmos de ajuste de brilho e contraste.
