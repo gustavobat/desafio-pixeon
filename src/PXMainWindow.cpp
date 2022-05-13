@@ -87,8 +87,8 @@ void PXMainWindow::createGroupBoxWidgets(QGroupBox *group_box) {
     
     // Create zoom related label/buttons
     m_zoom_label = new QLabel("Zoom options:");
-    m_increase_zoom_btn = new QPushButton("Increase Zoom", this);
-    m_decrease_zoom_btn = new QPushButton("Decrease Zoom", this);
+    m_increase_zoom_btn = new QPushButton("Zoom In", this);
+    m_decrease_zoom_btn = new QPushButton("Zoom Out", this);
     m_fit_to_screen_btn = new QPushButton("Fit to screen", this);
    
     // Create brightness/contrast related labels/sliders
