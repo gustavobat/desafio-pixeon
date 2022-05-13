@@ -44,16 +44,33 @@ A animação a seguir mostra um exemplo de uso deste programa:
 
 ## Detalhes de implementação
 
-Para a implementação, foram criadas duas classes: `PXMainWindow` e `PXRenderThread`, resumidas abaixo:
+As seguintes classes foram criadas:
 
 - `PXMainWindow`: responsável pela organização dos componentes gráficos e pelo recebimento dos comandos do usuário.
 
 - `PXRenderThread`: responsável pelas operações de processamento da imagem: zoom, alteração de brilho e contraste.
 
-Um objeto `PXRenderThread` faz parte da estrutura de dados da classe `PXMainWindow`. Cada vez que o usuário demanda uma
-mudança na imagem, a _render thread_ é acionada e a imagem renderizada é retornada por um conjunto de `signal/slot` que se
-conecta no objeto _main window_. Apesar das operações de processamento serem leves, isto evita que a interface gráfica
+A exibição de imagem ocorre dentro de um _widget_ `QLabel`, que por sua vez é exibido dentro de um `QScrollArea`.
+Modificações nas imagens ocorre através do redimensionamento do objeto `QLabel` e da atualização de seu `QPixmap`
+ através de chamadas aos métodos `QLabel::resize` e `QLabel::setPixmap` respectivamente.
+ O objeto `QScrollArea` faz parte do layout central da `PXMainWindow`.
+ 
+Ao carregar uma imagem, uma cópia do seu `QPixmap` original é armazenada na estrutura de dados 
+do objeton `PXMainWindow`. Toda alteração é feita a partir do `QPixmap` original, para evitar que
+edições se acumulem. Por exemplo, se a imagem original não fosse armazenada de alguma forma, 
+reduzir muito o _zoom_ de uma imagem e então clicar no botão **Fit to screen** tornaria a imagem esmaecida.
+
+A estrutura de dados da classe `PXMainWindow` armazena os valores atualizados dos fatores de 
+escala, brilho e contraste nos membros `m_scale_factor`, `m_brightness_factor` e `m_contrast_factor`
+e um objeto `PXRenderThread`.
+ 
+Cada vez que o usuário demanda uma mudança na imagem, a _render thread_ é acionada, passando
+`m_scale_factor`, `m_brightness_factor`, `m_contrast_factor` e uma referência ao `QPixmap` original como parâmetro.
+A imagem renderizada é retornada através de um novo `QPixmap`, enviado através de um `signal` que se
+conecta num `slot` da classe _main window_ responsável por atualizar a exibição de imagem.
+Apesar das operações de processamento serem leves, isto evita que a interface gráfica
 fique bloqueada a novos comandos enquanto espera uma imagem ser renderizada.
+
 
 ## Futuras melhorias
 - No momento, não testes de integração e unitários. Implementá-los é uma tarefa de muita importância para 
