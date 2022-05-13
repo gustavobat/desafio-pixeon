@@ -24,7 +24,7 @@ void PXMainWindow::createMenuBar() {
     auto *file_menu = menuBar()->addMenu(tr("&File"));
 
     auto *open_action =
-        file_menu->addAction(tr("&Open Image"), this, &PXMainWindow::openImageDialog);
+        file_menu->addAction(tr("&Open Image File"), this, &PXMainWindow::openImageDialog);
     open_action->setStatusTip(tr("Open an image file"));
     open_action->setShortcut(QKeySequence::Open);
 
