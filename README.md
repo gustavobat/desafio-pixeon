@@ -12,7 +12,7 @@ A interface gráfica conta com quatro elementos principais: uma barra de menu ao
 no canto esquerdo-superior, um painel de controle no canto esquerdo-inferior e uma área de exibição de imagem à direita. 
 
 A animação a seguir mostra um exemplo de uso deste programa:
-
+![alt text](assets/example.gif)
 
 ### Comportamentos
 
