@@ -3,10 +3,15 @@
 Este projeto faz parte do processo seletivo para o cargo de Desenvolvedor C++ da **[Pixeon](https://www.pixeon.com/)**.
 
 A avaliação consiste em desenvolver um visualizador de imagens utilizando o framework **[Qt](https://www.qt.io/)**.
+
 O resultado é descrito abaixo.
 
 ## Resultado
 
+A interface gráfica conta com quatro elementos principais: uma barra de menu ao topo, uma lista para seleção de arquivos
+no canto esquerdo-superior, um painel de controle no canto esquerdo-inferior e uma área de exibição de imagem à direita. 
+
+A animação a seguir mostra um exemplo de uso deste programa:
 
 
 ### Comportamentos
@@ -20,6 +25,7 @@ O resultado é descrito abaixo.
   selecionado, se existir. Caso contrário, a tela inicial é exibida.
 - Se nenhum arquivo é selecionado, o botão **Delete Image Files** remove todas as imagens. Este comportamento é
   mencionado na seção **Futuras melhorias**.
+  
 
 ## Notas de implementação
 
