@@ -191,6 +191,8 @@ void PXMainWindow::setCurrentFile(const QString &full_file_name) {
     m_scale_factor = 1.0;
     m_brightness_factor = 0.0;
     m_contrast_factor = 0.0;
+    m_brightness_slider->setValue(0);
+    m_contrast_slider->setValue(0);
     drawImage();
 }
 
