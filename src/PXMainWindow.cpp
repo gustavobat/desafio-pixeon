@@ -5,7 +5,7 @@ PXMainWindow::PXMainWindow(QWidget *parent) : QMainWindow(parent), m_render_thre
 
     // Resize and center GUI
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
-    move(screen()->geometry().center() - frameGeometry().center());
+    move(QGuiApplication::primaryScreen()->geometry().center() - frameGeometry().center());
     
     // Set center alignment of m_image_label that will display the images
     m_image_label.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
