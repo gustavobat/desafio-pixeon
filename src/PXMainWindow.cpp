@@ -243,6 +243,7 @@ void PXMainWindow::deleteImages() {
     if (m_list->selectionModel()->selectedIndexes().isEmpty()) {
         m_stripped_to_absolute_file_name.clear();
         m_list->clear();
+        m_list->setCurrentItem(nullptr);
         disableControls();
         m_image_label.clear();
     } else {
